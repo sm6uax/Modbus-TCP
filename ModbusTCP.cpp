@@ -578,7 +578,7 @@ uint8_t ModbusTCP::ModbusMasterTransaction(uint8_t u8MBFunction)
   u8ModbusADU[4] = packetLength << 8;
   u8ModbusADU[5] = packetLength;
 
-  Serial.println(F("Check time for connection."));
+  Serial1.println(F("Check time for connection."));
   uint32_t MBconnectionTimer = millis();
 #if WIZNET_W5100  
   if(!ModbusClient.connected()) {         // fOR w5100
@@ -587,7 +587,7 @@ uint8_t ModbusTCP::ModbusMasterTransaction(uint8_t u8MBFunction)
 #elif ESP8266
   if (!ModbusClient.connected()) {        // for esp8266
 #endif
-    Serial.print(F("Trying to connect..."));
+    Serial1.print(F("Trying to connect..."));
     MBconnectionFlag = 0;
     while(MBconnectionFlag != 1)
     {
@@ -597,13 +597,13 @@ uint8_t ModbusTCP::ModbusMasterTransaction(uint8_t u8MBFunction)
         return MBServerConnectionTimeOut;
       }      
       MBconnectionFlag = ModbusClient.connect(serverIP, 502);
-      Serial.println("MBconnectionFlag: " + String(int(MBconnectionFlag)));  // Add further functionality here.
+      Serial1.println("MBconnectionFlag: " + String(int(MBconnectionFlag)));  // Add further functionality here.
       delay(100);                                                                      // Read client.connect() Further.
     }
-    Serial.println(F("Connected to Server!!"));
+    Serial1.println(F("Connected to Server!!"));
   }
   else
-    Serial.println(F("Already Connected to Server!!"));
+    Serial1.println(F("Already Connected to Server!!"));
 
 #ifdef ESP8266
   ModbusClient.write(&u8ModbusADU[0], u8ModbusADUSize);
@@ -663,12 +663,12 @@ uint8_t ModbusTCP::ModbusMasterTransaction(uint8_t u8MBFunction)
   }
 #if WIZNET_W5100  
   ModbusClient.stop();
-  Serial.println("WIZNET W5100 : Stopping");
+  Serial1.println("WIZNET W5100 : Stopping");
 #elif ENC28J60
-  Serial.println("ENC28J60 : Not Stopping");
+  Serial1.println("ENC28J60 : Not Stopping");
 #elif ESP8266
   ModbusClient.stop();
-  Serial.println("ESP8266 : Stopping");
+  Serial1.println("ESP8266 : Stopping");
 #endif
 
 
